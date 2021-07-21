@@ -1,44 +1,43 @@
-//Create a reference for canvas 
 
-//Give specific height and width to the car image
+var canvas = new fabric.Canvas("myCanvas");
 
-
-//Set initial position for a car image.
-canvas = document.getElementById('myCanvas');
-ctx = canvas.getContext("2d");
-background_image = "parkingLot.jpg";
-greencar_image = "car2.png";
+//Set initial positions for ball and hole images.
+ball_x=0;
+ball_y=0;
+hole_x=800;
+hole_y=400;
 
 
-
-random_number = Math.floor(Math.random() * 4);
-console.log(random_number);
-rover_width = 100;
-rover_height = 90;
-
-
-
-greencar_image = "car2.png";
-
-rover_x = 10;
-rover_y = 10;
-
-function add() {
-	background_imgTag = new Image(); //defining a variable with a new image
-	background_imgTag.onload = uploadBackground; // setting a function, onloading this variable
-	background_imgTag.src = background_image;   // load image
-
-	rover_imgTag = new Image(); //defining a variable with a new image
-	rover_imgTag.onload = uploadrover; // setting a function, onloading this variable
-	rover_imgTag.src = greencar_image;   // load image
+function load_img(){
+	fabric.Image.fromURL("golf-h.png", function(Img){
+		hole_obj=Img;
+		hole_obj.scaleToWidth(50);
+		hole_obj.scaleToHeight=(50);
+		hole_obj.set({
+	top:hole_y,
+	left:hole_x
+	
+		});
+	canvas.add(hole_obj);
+	
+		});
+		new_image();
 }
 
-function uploadBackground() {
-	ctx.drawImage(background_imgTag, 0, 0, canvas.width, canvas.height);
-}
+function new_image()
+{
+	fabric.Image.fromURL("ball.png", function(Img){
+   ball_obj=Img;
+   ball_obj.scaleToWidth(50);
+   ball_obj.scaleToHeight=(50);
+   ball_obj.set({
+top:ball_y,
+left:ball_x
 
-function uploadrover() {
-	ctx.drawImage(rover_imgTag, rover_x, rover_y, rover_width, rover_height);
+	});
+canvas.add(ball_obj);
+
+	});
 }
 
 
@@ -48,6 +47,12 @@ function my_keydown(e)
 {
 	keyPressed = e.keyCode;
 	console.log(keyPressed);
+	/* Check the coordinates of the ball and hole images to finish the game. 
+	And id coordinates matches them remove ball image, 
+	display "GAME OVER!!!" 
+	and make canvas border 'red'. */
+	
+
 		if(keyPressed == '38')
 		{
 			up();
@@ -68,93 +73,69 @@ function my_keydown(e)
 			right();
 			console.log("right");
 		}
-}
-
-function up()
-{
-	if(rover_y >=0)
-	{
-		rover_y = rover_y - 10;
-		console.log("When up arrow is pressed,  x = " + rover_x + " | y = " +rover_y);
-		 uploadBackground();
-		 uploadrover();
 	}
-	if(rover_x==420 && rover_y==90){
-		document.getElementById("txt").innerHTML="You win";
-		
-		
-		
-			}else{
-
-
-				document.getElementById("txt").innerHTML="Valet Parking";
 	
-	
-			}
+	function up()
+{
+	console.log(ball_x+" "+ball_y);
+	if(ball_y >=0)
+	{
+		ball_y = ball_y - 5;
+		
+		canvas.remove(ball_obj);
+		load_img();
+	}
+	if (ball_x==hole_x&&ball_y==hole_y){
+document.getElementById("hd3").innerHTML="you win";
+console.log("win");
+
+	}
 }
+
 function down()
 {
-	if(rover_y <=500)
+	console.log(ball_x+" "+ball_y);
+	if(ball_y <=500)
 	{
-		rover_y =rover_y+ 10;
-		console.log("When down arrow is pressed,  x = " + rover_x + " | y = " +rover_y);
-		uploadBackground();
-		 uploadrover();
+		ball_y = ball_y + 5;
+		
+		canvas.remove(ball_obj);
+		load_img();
 	}
-	if(rover_x==420 && rover_y==90){
-		document.getElementById("txt").innerHTML="You win";
+	if (ball_x==hole_x&&ball_y==hole_y){
+		canvas.remove(ball_obj);
+		document.getElementById("hd3").innerHTML="you win";
 		
-		
-		
-			}else{
-
-
-				document.getElementById("txt").innerHTML="Valet Parking";
-	
-	
 			}
 }
+
 function left()
 {
-	if(rover_x >= 0)
+	console.log(ball_x+" "+ball_y);
+	if(ball_x >0)
 	{
-		rover_x =rover_x - 10;
-		console.log("When left arrow is pressed,  x = " + rover_x + " | y = " +rover_y);
-		uploadBackground();
-		 uploadrover();
+		ball_x = ball_x - 5;
+		
+		canvas.remove(ball_obj);
+		load_img();
 	}
-	if(rover_x==420 && rover_y==90){
-		document.getElementById("txt").innerHTML="You win";
+	if (ball_x==hole_x&&ball_y==hole_y){
+		canvas.remove(ball_obj);
+		document.getElementById("hd3").innerHTML="you win";
 		
-		
-		
-			}else{
-
-
-				document.getElementById("txt").innerHTML="Valet Parking";
-	
-	
 			}
 }
+
 function right()
 {
-	if(rover_x <= 700)
-	{
-		rover_x =rover_x + 10;
-		console.log("When right arrow is pressed,  x = " + rover_x + " | y = " +rover_y);
-		uploadBackground();
-		uploadrover();
-   }
-   if(rover_x==420 && rover_y==90){
-	document.getElementById("txt").innerHTML="You win";
-	
-	
-	
-		}else{
-
-
-			document.getElementById("txt").innerHTML="Valet Parking";
-
-
-		}
+	ball_x = ball_x + 5;
+		
+	canvas.remove(ball_obj);
+	load_img();
+	console.log(ball_x+" "+ball_y);
+	if (ball_x==hole_x&&ball_y==hole_y){
+		canvas.remove(ball_obj);
+		document.getElementById("hd3").innerHTML="you win";
+		
+			}
 }
